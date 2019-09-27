@@ -200,6 +200,7 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         auto channelSelector = *panY;
         auto outputValue = *outputMenu;
         
+     
         
         
         
@@ -352,7 +353,7 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
                     
                     else if(channel == 7)
                     {
-                        channelData = 0;
+                        channelData[sample] = 0;
                     }
                 }
                 
@@ -475,7 +476,7 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
                     }
                     else if(channel == 1)
                     {
-                        channelData = 0;
+                        channelData[sample] = 0;
                     }
                     
                     else if(channel == 2)
@@ -490,7 +491,7 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
                     
                     else if(channel == 4)
                     {
-                        channelData = 0;
+                        channelData[sample] = 0;
                     }
                     
                     else if(channel == 5)

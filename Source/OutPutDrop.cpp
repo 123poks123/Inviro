@@ -11,6 +11,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "OutPutDrop.h"
 
+
 //==============================================================================
 OutPutDrop::OutPutDrop(MaggsA3AudioProcessor& p) :
 processor(p)
@@ -21,7 +22,7 @@ processor(p)
     outputMenu.addItem("Quad", 2);
     outputMenu.addItem("5.1", 3);
     outputMenu.addItem("7.1", 4);
-    outputMenu.addItem("Octagonal", 5);
+    outputMenu.addItem("Octophonic", 5);
     outputMenu.addItem("9.1", 6);
     
     addAndMakeVisible(&outputMenu);

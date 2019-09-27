@@ -10,10 +10,11 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+//#include "OutPutDrop.h"
 
 //==============================================================================
 MaggsA3AudioProcessorEditor::MaggsA3AudioProcessorEditor (MaggsA3AudioProcessor& p, AudioProcessorValueTreeState& vts)
-: AudioProcessorEditor (&p), processor (p), valueTreeState(vts), outputDropGui(p), inputDropGui(p)
+: AudioProcessorEditor (&p), processor (p), valueTreeState(vts) //outputDropGui(p), inputDropGui(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -21,6 +22,19 @@ MaggsA3AudioProcessorEditor::MaggsA3AudioProcessorEditor (MaggsA3AudioProcessor&
     setResizable(false, false);
     setSize(600, 500);
     
+    
+    
+    outputMenu.addItem("Stereo", 1);
+    outputMenu.addItem("Quad", 2);
+    outputMenu.addItem("5.1", 3);
+    outputMenu.addItem("7.1", 4);
+    outputMenu.addItem("Octophonic", 5);
+    outputMenu.addItem("9.1", 6);
+    
+    outputMenu.addListener(this);
+    outputBox = new AudioProcessorValueTreeState::ComboBoxAttachment (processor.parameters, "outputmenu", outputMenu);
+    
+    //Set up Node
     xPosition = proportionOfWidth(0.5);
     
     node.setXPosition(xPosition);
@@ -31,36 +45,94 @@ MaggsA3AudioProcessorEditor::MaggsA3AudioProcessorEditor (MaggsA3AudioProcessor&
     
     node.setDiameter(40);
     
-    addAndMakeVisible(&outputDropGui);
+    //Make Menus Visable
     
-    addAndMakeVisible(&inputDropGui);
+    addAndMakeVisible(outputMenu);
+    
+    //addAndMakeVisible(&outputDropGui);
+    
+    //addAndMakeVisible(&inputDropGui);
+        
+    
+    stereoImage = ImageCache::getFromMemory(BinaryData::Background_Stereo_Draft_png, BinaryData::Background_Stereo_Draft_pngSize);
+    
+    quadImage = ImageCache::getFromMemory(BinaryData::Background_Quad_Draft_png, BinaryData::Background_Quad_Draft_pngSize);
+    
+    octophonicImage = ImageCache::getFromMemory(BinaryData::Background_Octophonic_Draft_png, BinaryData::Background_Octophonic_Draft_pngSize);
+    
+    if( processor.parameters.getParameter("outputmenu")->getValue() == 0)
+    {
+        bgImage = stereoImage;
+      
+    }
+    
+    else if(processor.parameters.getParameter("outputmenu")->getValue() == 1)
+    {
+        bgImage = quadImage;
+        
+        
+    }
+    
+    else if(processor.parameters.getParameter("outputmenu")->getValue() == 4)
+    {
+        bgImage = octophonicImage;
+       
+        
+    }
 
-    bgImage = ImageCache::getFromMemory(BinaryData::Easy_background_draft_png, BinaryData::Easy_background_draft_pngSize);
    
- 
+    
+    
+   
     
 }
 
 MaggsA3AudioProcessorEditor::~MaggsA3AudioProcessorEditor()
 {
-    
-
+  
 }
     
 
 //==============================================================================
 void MaggsA3AudioProcessorEditor::paint (Graphics& g)
 {
+    
+    
+    
     g.fillAll(Colours::black);
     
+
+   
+   
     g.drawImageWithin(bgImage, 0, 0, getWidth(), getHeight(), RectanglePlacement::fillDestination);
+    
+    
+    /*if( processor.parameters.getParameter("outputmenu")->getValue() == 0)
+    {
+         g.drawImageWithin(stereoImage, 0, 0, getWidth(), getHeight(), RectanglePlacement::fillDestination);
+        
+    }
+    else if(processor.parameters.getParameter("outputmenu")->getValue() == 1)
+    {
+        g.drawImageWithin(quadImage, 0, 0, getWidth(), getHeight(), RectanglePlacement::fillDestination);
+        
+    }
+    else if(processor.parameters.getParameter("outputmenu")->getValue() == 4)
+    {
+         g.drawImageWithin(octophonicImage, 0, 0, getWidth(), getHeight(), RectanglePlacement::fillDestination);
+    
+    }*/
+   
     
     g.setColour(Colours::ghostwhite);
     g.setFont (Font("Herculanum", 45.0f, Font::italic));
     g.drawFittedText("Inviro", 15 , 12, getWidth(), 50, Justification::centredTop, 1);
     
     node.drawNode(g);
+    
+    
   
+    
    
 }
 
@@ -73,11 +145,11 @@ void MaggsA3AudioProcessorEditor::resized()
     //const int componentHeigth = 200;
     const int componentWidth = 200;
     
-    inputDropGui.setBounds(10, 10,180,100);
+    //inputDropGui.setBounds(10, 10,180,100);
     
-    outputDropGui.setBounds(400,10,180,100);
+    //outputDropGui.setBounds(400,10,180,100);
     
-    
+    outputMenu.setBounds(400, 20, 180, 20);
     
    
 }
@@ -106,6 +178,40 @@ void MaggsA3AudioProcessorEditor::mouseDrag(const MouseEvent& m)
     }
 }
 
-
-
+void MaggsA3AudioProcessorEditor::comboBoxChanged(ComboBox* box)
+{
+    
+    
+    
+    std::make_unique<AudioParameterFloat>("outputmenu" , //parameter ID
+                                          "output" , //Parameter Name
+                                          0.0f, //min value
+                                          5.0f, //Max Value
+                                          0.0f //Default Value
+                                          );
+    
+    float output = *processor.parameters.getRawParameterValue("outputmenu");
+    
+    if( output == 0)
+    {
+        bgImage = stereoImage;
+        repaint();
+    }
+    
+    else if(output == 1)
+    {
+        bgImage = quadImage;
+        repaint();
+        
+    }
+    
+    else if(output == 4)
+    {
+        bgImage = octophonicImage;
+        repaint();
+        
+    }
+    
+  
+}
 

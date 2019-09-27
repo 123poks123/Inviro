@@ -19,6 +19,12 @@
     </GROUP>
     <FILE id="Pj9zUl" name="Easy background draft.png" compile="0" resource="1"
           file="Easy background draft.png"/>
+    <FILE id="goLdxE" name="Background Quad Draft.png" compile="0" resource="1"
+          file="../../Pictures/Background Quad Draft.png"/>
+    <FILE id="abngJg" name="Background Octophonic Draft.png" compile="0"
+          resource="1" file="Background Octophonic Draft.png"/>
+    <FILE id="GG22RL" name="Background Stereo Draft.png" compile="0" resource="1"
+          file="../../Pictures/Background Stereo Draft.png"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">

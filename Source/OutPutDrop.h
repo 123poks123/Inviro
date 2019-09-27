@@ -36,5 +36,7 @@ private:
     ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> outputBox;
     
     MaggsA3AudioProcessor& processor;
+    
+    
   
 };

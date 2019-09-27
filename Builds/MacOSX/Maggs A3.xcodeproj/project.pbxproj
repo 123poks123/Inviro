@@ -304,13 +304,6 @@
 			path = ../../Source/Node.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
-		37F66F048756255F374C7F40 = {
-			isa = PBXFileReference;
-			lastKnownFileType = file;
-			name = "juce_gui_extra";
-			path = "/Users/Alex/Documents/SDK/JUCE/modules/juce_gui_extra";
-			sourceTree = "<absolute>";
-		};
 		39DA32646024B33C68C181F0 = {
 			isa = PBXFileReference;
 			explicitFileType = wrapper.cfbundle;
@@ -331,6 +324,13 @@
 			name = Carbon.framework;
 			path = System/Library/Frameworks/Carbon.framework;
 			sourceTree = SDKROOT;
+		};
+		37F66F048756255F374C7F40 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_gui_extra";
+			path = "/Users/Alex/Documents/SDK/JUCE/modules/juce_gui_extra";
+			sourceTree = "<absolute>";
 		};
 		3D94E1C6D8C8DEA45BC86702 = {
 			isa = PBXFileReference;
@@ -451,6 +451,13 @@
 			path = "/Users/Alex/Documents/SDK/JUCE/modules/juce_opengl";
 			sourceTree = "<absolute>";
 		};
+		6C60DF496C97AA0E164DCFE9 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			name = "Background Stereo Draft.png";
+			path = "../../../../Pictures/Background Stereo Draft.png";
+			sourceTree = "SOURCE_ROOT";
+		};
 		71E185E5D424F7139EE20D17 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -533,6 +540,13 @@
 			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = "include_juce_gui_basics.mm";
 			path = "../../JuceLibraryCode/include_juce_gui_basics.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		A01E730F91C7A3440756BB37 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			name = "Background Quad Draft.png";
+			path = "../../../../Pictures/Background Quad Draft.png";
 			sourceTree = "SOURCE_ROOT";
 		};
 		A0637D66E3306C7A0F90CA9D = {
@@ -654,6 +668,13 @@
 			path = System/Library/Frameworks/AudioUnit.framework;
 			sourceTree = SDKROOT;
 		};
+		DD6A11A241A99BD34B3D7917 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			name = "Background Octophonic Draft.png";
+			path = "../../Background Octophonic Draft.png";
+			sourceTree = "SOURCE_ROOT";
+		};
 		DD805FBE46623A0972365094 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -718,6 +739,9 @@
 			children = (
 				A5F28F5077397F980225BFCB,
 				8607313870FE837C83A167A1,
+				A01E730F91C7A3440756BB37,
+				DD6A11A241A99BD34B3D7917,
+				6C60DF496C97AA0E164DCFE9,
 			);
 			name = "Maggs A3";
 			sourceTree = "<group>";
