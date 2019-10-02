@@ -35,11 +35,11 @@ MaggsA3AudioProcessorEditor::MaggsA3AudioProcessorEditor (MaggsA3AudioProcessor&
     outputBox = new AudioProcessorValueTreeState::ComboBoxAttachment (processor.parameters, "outputmenu", outputMenu);
     
     //Set up Node
-    xPosition = proportionOfWidth(0.5);
+    xPosition = 300;
     
     node.setXPosition(xPosition);
     
-    yPosition = proportionOfWidth(0.5);
+    yPosition = 300;
     
     node.setXPosition(yPosition);
     
@@ -149,7 +149,7 @@ void MaggsA3AudioProcessorEditor::resized()
     
     //outputDropGui.setBounds(400,10,180,100);
     
-    outputMenu.setBounds(400, 20, 180, 20);
+    outputMenu.setBounds(410, 25, 165, 20);
     
    
 }

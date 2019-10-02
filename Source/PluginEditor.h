@@ -49,7 +49,7 @@ private:
     
     AudioProcessorValueTreeState& valueTreeState;
     
-    float xPosition, yPosition, diameter;
+    float xPosition = 300, yPosition = 300, diameter = 40;
     
     Colour colour = Colours::greenyellow;
     
