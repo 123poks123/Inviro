@@ -16,7 +16,7 @@ Alex Maggs : Software developer & GUI design
 
 ## Installation
 
-Use the clone or download button located on the right of the GitHub link: https://github.com/123poks123/Maggs-A3.git  
+Use the clone or download button located on the right of the GitHub link: https://github.com/123poks123/Inviro 
 
 ```bash
 clone example: 
