@@ -54,11 +54,19 @@ MaggsA3AudioProcessorEditor::MaggsA3AudioProcessorEditor (MaggsA3AudioProcessor&
     //addAndMakeVisible(&inputDropGui);
         
     
-    stereoImage = ImageCache::getFromMemory(BinaryData::Background_Stereo_Draft_png, BinaryData::Background_Stereo_Draft_pngSize);
+    stereoImage = ImageCache::getFromMemory(BinaryData::Background_Stereo_Semi_Final_png, BinaryData::Background_Stereo_Semi_Final_pngSize);
     
-    quadImage = ImageCache::getFromMemory(BinaryData::Background_Quad_Draft_png, BinaryData::Background_Quad_Draft_pngSize);
+    quadImage = ImageCache::getFromMemory(BinaryData::Background_Quad_Semi_Final_png, BinaryData::Background_Quad_Semi_Final_pngSize);
     
-    octophonicImage = ImageCache::getFromMemory(BinaryData::Background_Octophonic_Draft_png, BinaryData::Background_Octophonic_Draft_pngSize);
+    fivePointOneImage = ImageCache::getFromMemory(BinaryData::Background_5_1_Semi_Final_png, BinaryData::Background_5_1_Semi_Final_pngSize);
+    
+    sevenPointOneImage = ImageCache::getFromMemory(BinaryData::Background_7_1_Semi_Final_png, BinaryData::Background_7_1_Semi_Final_pngSize);
+    
+    octophonicImage = ImageCache::getFromMemory(BinaryData::Background_Octophonic_Semi_Final_png, BinaryData::Background_Octophonic_Semi_Final_pngSize);
+    
+    ninePointOneImage =ImageCache::getFromMemory(BinaryData::Inviro_Coming_soon_png, BinaryData::Inviro_Coming_soon_pngSize);
+    
+    
     
     if( processor.parameters.getParameter("outputmenu")->getValue() == 0)
     {
@@ -69,6 +77,20 @@ MaggsA3AudioProcessorEditor::MaggsA3AudioProcessorEditor (MaggsA3AudioProcessor&
     else if(processor.parameters.getParameter("outputmenu")->getValue() == 1)
     {
         bgImage = quadImage;
+        
+        
+    }
+    
+    else if(processor.parameters.getParameter("outputmenu")->getValue() == 2)
+    {
+        bgImage = fivePointOneImage;
+        
+        
+    }
+    
+    else if(processor.parameters.getParameter("outputmenu")->getValue() == 3)
+    {
+        bgImage = sevenPointOneImage;
         
         
     }
@@ -105,28 +127,11 @@ void MaggsA3AudioProcessorEditor::paint (Graphics& g)
    
    
     g.drawImageWithin(bgImage, 0, 0, getWidth(), getHeight(), RectanglePlacement::fillDestination);
-    
-    
-    /*if( processor.parameters.getParameter("outputmenu")->getValue() == 0)
-    {
-         g.drawImageWithin(stereoImage, 0, 0, getWidth(), getHeight(), RectanglePlacement::fillDestination);
-        
-    }
-    else if(processor.parameters.getParameter("outputmenu")->getValue() == 1)
-    {
-        g.drawImageWithin(quadImage, 0, 0, getWidth(), getHeight(), RectanglePlacement::fillDestination);
-        
-    }
-    else if(processor.parameters.getParameter("outputmenu")->getValue() == 4)
-    {
-         g.drawImageWithin(octophonicImage, 0, 0, getWidth(), getHeight(), RectanglePlacement::fillDestination);
-    
-    }*/
    
     
     g.setColour(Colours::ghostwhite);
-    g.setFont (Font("Herculanum", 45.0f, Font::italic));
-    g.drawFittedText("Inviro", 15 , 12, getWidth(), 50, Justification::centredTop, 1);
+    g.setFont (Font("Avenir", 45.0f, Font::italic));
+    //g.drawFittedText("Inviro", 15 , 12, getWidth(), 50, Justification::centredTop, 1);
     
     node.drawNode(g);
     
@@ -149,7 +154,7 @@ void MaggsA3AudioProcessorEditor::resized()
     
     //outputDropGui.setBounds(400,10,180,100);
     
-    outputMenu.setBounds(410, 25, 165, 20);
+    outputMenu.setBounds(415, 55, 165, 20);
     
    
 }
@@ -165,12 +170,30 @@ void MaggsA3AudioProcessorEditor::mouseDrag(const MouseEvent& m)
         float newPanXValue = m.getDistanceFromDragStartX() + m.getMouseDownX();
         float newPanYValue = m.getDistanceFromDragStartY() + m.getMouseDownY();
         
+        if(newPanXValue > 590)
+        {
+            newPanXValue = 590;
+        }
+        if(newPanXValue < 10)
+        {
+            newPanXValue = 10;
+        }
+        if(newPanYValue > 490)
+        {
+            newPanYValue = 490;
+        }
+        if(newPanYValue < 130)
+        {
+            newPanYValue = 130;
+        }
+        
         //map the values
-        panXValue = jmap(newPanXValue, 0.0f, 600.0f, 0.0f, 1.0f);
-        panYValue = jmap(newPanYValue, 0.0f, 500.0f, 0.0f, 1.0f);
+        panXValue = jmap(newPanXValue, 10.0f, 590.0f, 0.0f, 1.0f);
+        panYValue = jmap(newPanYValue, 130.0f, 490.0f, 0.0f, 1.0f);
       
         processor.parameters.getParameter("panx")->setValueNotifyingHost(panXValue);
         processor.parameters.getParameter("pany")->setValueNotifyingHost(panYValue);
+        
         node.setXPosition(newPanXValue);
         node.setYPosition(newPanYValue);
         repaint();
@@ -205,6 +228,20 @@ void MaggsA3AudioProcessorEditor::comboBoxChanged(ComboBox* box)
         
     }
     
+    else if(output == 2)
+    {
+        bgImage = fivePointOneImage;
+        repaint();
+        
+    }
+    
+    else if(output == 3)
+    {
+        bgImage = sevenPointOneImage;
+        repaint();
+        
+    }
+    
     else if(output == 4)
     {
         bgImage = octophonicImage;
@@ -212,6 +249,24 @@ void MaggsA3AudioProcessorEditor::comboBoxChanged(ComboBox* box)
         
     }
     
+    else if(output == 5)
+    {
+        bgImage = ninePointOneImage;
+        repaint();
+        
+    }
+    
   
 }
 
+void MaggsA3AudioProcessorEditor::keepNodeInField(float &newX, float &newY, Node selectedNode)
+{
+    if (newX > 590)
+        newX = 590;
+    if (newX < 10)
+        newX = 10;
+    if (newY > 490)
+        newY = 490;
+    if (newY < 130)
+        newY = 130;
+}

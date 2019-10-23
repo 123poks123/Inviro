@@ -35,7 +35,7 @@ public:
     
     void comboBoxChanged(ComboBox*) override;
     
-    
+    void keepNodeInField(float&, float&, Node selecedNode);
     
 private:
     
@@ -67,6 +67,9 @@ private:
     Image stereoImage;
     Image quadImage;
     Image octophonicImage;
+    Image fivePointOneImage;
+    Image sevenPointOneImage;
+    Image ninePointOneImage;
     
     ComboBox outputMenu;
     

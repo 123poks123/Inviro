@@ -189,10 +189,12 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     AudioBuffer<float> wetBuffer(getTotalNumInputChannels(), buffer.getNumSamples());
     wetBuffer.makeCopyOf(buffer);
     
+    
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
         auto* wetData = wetBuffer.getWritePointer(channel);
+        
         
         //Implement Pan Fucntion
         //Pan pot / range + 0.5
@@ -200,34 +202,92 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
         auto channelSelector = *panY;
         auto outputValue = *outputMenu;
         
-     
+        auto frontBack = *panY / 200.0f + 0.5f;
+        auto front = 1 - frontBack ;
+        auto back = frontBack;
+        float mid;
+        float frontMid;
+        float backMid;
+        
+        
+        //make mid selector scale to 100 in the middle
+        if(channelSelector < 0 && channelSelector > -100 )
+        {
+            mid = (back + back);
+        }
+        
+        else if (channelSelector < 100 && channelSelector > 0)
+        {
+            mid = front * 2;
+        }
+        
+        if(channelSelector < -50 && channelSelector > -100 )
+        {
+            frontMid = (back + back + back + back);
+        }
+        
+        else if (channelSelector < 0 && channelSelector > -50)
+        {
+            frontMid = front;
+        }
+        
+        if(channelSelector > 50 && channelSelector < 100 )
+        {
+            backMid = (back + back + back + back);
+        }
+        
+        else if (channelSelector < 100 && channelSelector > 50)
+        {
+            backMid = front * 4;
+        }
+        
+        auto frontL = channel == 0;
+        auto frontR = channel == 1;
+        auto centre = channel == 2;
+        
+        auto lSide = channel == 3;
+        auto rSide = channel == 4;
+        auto lMidSide = channel == 5;
+        auto rMidSide = channel == 6;
+        auto lRear = channel == 7;
+        auto rRear = channel == 8;
+        
+  
+        
         
         
         
         
         for(int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
+            
             //Stero
             
             if (outputValue == 0.0)
             {
-                
-                if (channel == 0 )
+                if (channelSelector > -100 && channelSelector < 100)
                 {
-                    
-                    //Square Root panning
-                    channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude));
-                    
+                    if (channel == 0 )
+                    {
+                        
+                        //Square Root panning
+                        frontL = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude));
+                        
+                    }
+                    else if (channel == 1 )
+                    {
+                        //Square Root panning
+                        frontR = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude));
+                        
+                        
+                    }
                 }
-                else if (channel == 1 )
+                
+                //silence all channels when not in bounds
+                else
                 {
-                    //Square Root panning
-                    channelData[sample] = wetData[sample] * (sqrt(channelAmplitude));
-                    
-                    
+                    channelData[sample] = 0;
                 }
-                
-                
                 
             }
             
@@ -235,59 +295,65 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
             
             else if (outputValue == 1.0)
             {
-                if(channelSelector <20.0f && channelSelector > -60.0f)
+                if(channelSelector <0.0f && channelSelector > -100.0f)
                 {
                     if (channel == 0 )
                     {
                         
                         //Square Root panning
-                        channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude));
+                       frontL = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude));
                         
                     }
                     else if (channel == 1 )
                     {
                         //Square Root panning
-                        channelData[sample] = wetData[sample] * (sqrt(channelAmplitude));
+                        frontR  = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude));
                         
                     }
                     
                     //silence rear speakers
-                    if (channel == 2)
+                    if (channel == 3)
                     {
-                        channelData[sample] = 0;
+                       lSide = channelData[sample] = 0;
                     }
-                    else if(channel == 3)
+                    else if(channel == 4)
                     {
-                        channelData[sample] = 0;
+                        rSide = channelData[sample] = 0;
                     }
                 }
                 
-                else if(channelSelector > 20.0f && channelSelector < 80.0f)
+                else if(channelSelector > 0.0f && channelSelector < 100.0f)
                 {
                     
-                    if (channel == 2 )
+                    if (channel == 3 )
                     {
                         //Square Root panning
-                        channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude));
+                       lSide = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude));
                         
                     }
                     
-                    else if (channel == 3 )
+                    else if (channel == 4 )
                     {
                         //Square Root panning
-                        channelData[sample] = wetData[sample] * (sqrt(channelAmplitude));
+                       rSide = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude));
                     }
                     //silence front speakers
                     
                     if (channel == 0)
                     {
-                        channelData[sample] = 0;
+                       frontL = channelData[sample] = 0;
                     }
                     else if(channel == 1)
                     {
-                        channelData[sample] = 0;
+                        frontR = channelData[sample] = 0;
                     }
                 }
+                //silence all channels when not in bounds
+                else
+                {
+                    channelData[sample] = 0;
+                }
+                
             }
             
             
@@ -296,6 +362,32 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
             else if (outputValue == 2.0)
             {
                 
+                if(channel == 0)
+                {
+                   frontL = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude) * front);
+                }
+                
+                else if (channel == 1)
+                {
+                    frontR = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude) * front);
+                }
+                
+                else if (channel == 2)
+                {
+                    centre = channelData[sample] = wetData[sample] * (channelAmplitude * front);
+                }
+                
+                else if (channel == 3)
+                {
+                   lSide = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude) * back);
+                }
+                
+                else if (channel == 4)
+                {
+                    rSide = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude) * back);
+                }
+                
+                
             }
             
             //7.1
@@ -303,6 +395,40 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
             else if (outputValue == 3.0)
             {
                 
+                if(channel == 0)
+                {
+                    frontL = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude) * front);
+                }
+                
+                else if (channel == 1)
+                {
+                    frontR = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude) * front);
+                }
+                
+                else if (channel == 2)
+                {
+                    centre = channelData[sample] = wetData[sample] * (channelAmplitude * front);
+                }
+                
+                else if (channel == 3)
+                {
+                    lSide = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude) * mid);
+                }
+                
+                else if (channel == 4)
+                {
+                    rSide = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude) * mid);
+                }
+                
+                else if (channel == 5)
+                {
+                    lMidSide = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude) * back);
+                }
+                
+                else if (channel == 6)
+                {
+                    rMidSide = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude) * back);
+                }
             }
             
             //Octagonal
@@ -310,7 +436,7 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
             else if (outputValue == 4.0)
             {
                 
-                if(channelSelector <-20.0f && channelSelector > -60.0f)
+                if(channelSelector <-50.0f && channelSelector > -100.0f)
                 {
                     if (channel == 0 )
                     {
@@ -357,7 +483,7 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
                     }
                 }
                 
-                else if(channelSelector < 20.0f && channelSelector > -20.0f)
+                else if(channelSelector < 0.0f && channelSelector > -50.0f)
                 {
                     
                     if (channel == 2 )
@@ -404,7 +530,7 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
                     }
                 }
                 
-                else if(channelSelector > 20.0f && channelSelector < 60.0f)
+                else if(channelSelector > 0.0f && channelSelector < 50.0f)
                 {
                     
                     if (channel == 4 )
@@ -452,7 +578,7 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
                     }
                 }
                 
-                else if(channelSelector > 60.0f && channelSelector < 100.0f)
+                else if(channelSelector > 50.0f && channelSelector < 100.0f)
                 {
                     
                     if (channel == 6 )
@@ -499,18 +625,69 @@ void MaggsA3AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
                         channelData[sample] = 0;
                     }
                 }
-                
+                //silence all channels when not in bounds
+                else
+                {
+                    channelData[sample] = 0;
+                }
             }
             
             // 9.1
             
             else if (outputValue == 5.0)
             {
+                channelData[sample] = 0;
+                
+                /*if(channel == 0)
+                {
+                    frontL = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude) * front);
+                }
+                
+                else if (channel == 1)
+                {
+                    frontR = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude) * front);
+                }
+                
+                else if (channel == 2)
+                {
+                    centre = channelData[sample] = wetData[sample] * (channelAmplitude * front);
+                }
+                
+                else if (channel == 3)
+                {
+                    lSide = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude) * frontMid);
+                }
+                
+                else if (channel == 4)
+                {
+                    rSide = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude) * frontMid);
+                }
+                
+                else if (channel == 5)
+                {
+                    lMidSide = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude) * backMid);
+                }
+                
+                else if (channel == 6)
+                {
+                    rMidSide = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude) * backMid);
+                }
+                
+                else if (channel == 7)
+                {
+                    lRear = channelData[sample] = wetData[sample] * (sqrt(1-channelAmplitude) * back);
+                }
+                
+                else if (channel == 8)
+                {
+                    rRear = channelData[sample] = wetData[sample] * (sqrt(channelAmplitude) * back);
+                }*/
                 
             }
             
         }
     }
+    
 }
 
 

@@ -8,11 +8,11 @@
     <key>CFBundleIconFile</key>
     <string></string>
     <key>CFBundleIdentifier</key>
-    <string>com.yourcompany.MaggsA3</string>
+    <string>com.yourcompany.Inviro</string>
     <key>CFBundleName</key>
-    <string>Maggs A3</string>
+    <string>Inviro</string>
     <key>CFBundleDisplayName</key>
-    <string>Maggs A3</string>
+    <string>Inviro</string>
     <key>CFBundlePackageType</key>
     <string>BNDL</string>
     <key>CFBundleSignature</key>
@@ -29,11 +29,11 @@
     <array>
       <dict>
         <key>name</key>
-        <string>yourcompany: Maggs A3</string>
+        <string>yourcompany: Inviro </string>
         <key>description</key>
-        <string>Maggs A3</string>
+        <string>Inviro</string>
         <key>factoryFunction</key>
-        <string>MaggsA3AUFactory</string>
+        <string>InviroAUFactory</string>
         <key>manufacturer</key>
         <string>Manu</string>
         <key>type</key>
