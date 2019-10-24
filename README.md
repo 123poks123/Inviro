@@ -2,7 +2,7 @@
 
 Inviro is a surround sound plugin. It was made with the intention of being a super intuitive surround sound plugin. It makes using surround sound simple and easy for every user regardless of whether you are surround sound pro or beginner.  It allows to skip figuring out how to use the plugin and get straight to creating your own soundscapes and audio environments.  
 
-This plugin was created with the intention of making a surround sound plugin that was easy and allows you to skip the complexities of some of the typical surround sound panning plugins. There is a lot more features that I am still trying to implement so if you want to support me and this project think about donating to the link in the Github. I will be working on implementing Dolby Atmos® capabilities and Ambisonics into the plugin in the future. So keep an eye out for updates.
+This plugin was created with the intention of making a surround sound plugin that was easy and allows you to skip the complexities of some of the typical surround sound panning plugins. There is a lot more features that I am still trying to implement so keep an eye out for updates. I will be working on implementing Dolby Atmos® capabilities and Ambisonics into the plugin in the future. So keep an eye out for updates.
 
 ## Developers 
 
